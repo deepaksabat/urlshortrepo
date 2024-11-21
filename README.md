@@ -71,6 +71,25 @@ Response:
 }
 ```
 
+### POST `/metrics`
+It takes a JSON object in the following format as payload
+
+#### cURL
+
+```shell script
+curl --location 'http://localhost:9090/metrics' \
+--header 'Accept: application/json' \
+--data ''
+```
+
+Response:
+
+```json
+{
+  "udemy.com": 1
+}
+```
+
 Please note that API works only with valid HTTP or HTTPS Urls. In case of malformed Url, it returns `400 Bad Request` error with response body containing a JSON object in the following format
 
 ```json
