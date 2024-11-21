@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -35,7 +36,7 @@ public class UrlShortController {
     }
 
     @PostMapping("/shorten")
-    public ResponseEntity<Object> saveUrl(@RequestBody Url url, HttpServletRequest request) {
+    public ResponseEntity<Object> shortUrl(@RequestBody Url url) {
         UrlValidator validator = new UrlValidator(
                 new String[]{"http", "https"}
         );
@@ -45,19 +46,13 @@ public class UrlShortController {
             InvalidUrlError error = new InvalidUrlError("url", url.getLongUrl(), "Invalid URL");
             return ResponseEntity.badRequest().body(error);
         }
-        String baseUrl = null;
-        try {
-            baseUrl = urlService.getBaseUrl(request.getRequestURL().toString());
-        } catch (MalformedURLException e) {
-            logger.error("Malformed request url");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Request url is invalid", e);
-        }
-        ShortUrl shortUrl = ShortUrl.builder().shortUrl(baseUrl + urlService.getShortenUrl(longUrl)).build();
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        ShortUrl shortUrl = ShortUrl.builder().shortUrl(baseUrl + "/" + urlService.getShortenUrl(longUrl)).build();
         return new ResponseEntity<>(shortUrl, HttpStatus.OK);
     }
 
     @GetMapping("/{shortenString}")
-    public void redirectToFullUrl(HttpServletResponse response, @PathVariable String shortenString) {
+    public void redirectToLongUrl(HttpServletResponse response, @PathVariable String shortenString) {
         try {
             String longUrl = urlService.getLongUrl(shortenString);
             logger.info("long url is {}", longUrl);
