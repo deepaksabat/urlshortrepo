@@ -1,7 +1,6 @@
 package com.interview.urlshortner.service;
 
 import com.interview.urlshortner.entity.UrlEntity;
-import com.interview.urlshortner.model.Url;
 import com.interview.urlshortner.repository.UrlRepository;
 import org.junit.Test;
 import org.mockito.InjectMocks;
