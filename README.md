@@ -20,7 +20,7 @@ To build this project, run
 
 ```shell script
 git clone https://gitlab.com/kdeepak910/urlshortener.git
-cd urlshortener
+cd urlshortener/urlshortener
 mvn clean install
 ```
 
