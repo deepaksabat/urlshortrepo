@@ -38,7 +38,8 @@ public class UrlShortController {
     @PostMapping("/shorten")
     public ResponseEntity<Object> shortUrl(@RequestBody Url url) {
         UrlValidator validator = new UrlValidator(
-                new String[]{"http", "https"}
+                new String[]{"http", "https", "ftp", "mailto", "file", "data", "blob",
+                        "rtsp", "ssh", "ws", "wss", "jdbc", "irc", "geo"}
         );
         String longUrl = url.getLongUrl();
         if (!validator.isValid(longUrl)) {
